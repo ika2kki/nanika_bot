@@ -1,0 +1,9 @@
+config.toml
+**/__pycache__/
+*.log
+lava/**
+migrations/*_.sql
+app_cmds.json
+tess/
+Lavalink.jar
+cogs/_*
