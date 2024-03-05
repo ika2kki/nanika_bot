@@ -425,9 +425,32 @@ class SelfBase(core.nanika_cog):
             + "\n".join(f"\{fmt:<{maxlen-len(fmt)}} - {fmt}" for fmt in fmts)
         )
 
+    from typing import Optional, Literal
+
     @core.command(aliases=["avy"])
-    async def avatar(self, ctx, *, user: discord.User = commands.Author):
-        avatar = user.display_avatar.with_size(2048)
+    async def avatar(self, ctx, spec: Optional[Literal["*", ".", "-"]], *, user: discord.User = commands.Author):
+        """show user avatar
+        incl. links for other formats
+        type a specifier afterwards to only show a certain type of avatar
+        . -> resolves to guild, global or default
+        * -> global or default
+        - -> default avatar
+        """
+        attrs = ["guild_avatar", "avatar", "default_avatar"]
+        offset = 0
+        if spec == "*":
+            offset += 1
+        elif spec == ".":
+            if not ctx.guild:
+                return await ctx.send("we r in dm's")
+        elif spec == "-":
+            offset += 2
+        avatar = next(avy for attr in attrs[offset:] if (avy := getattr(user, attr, None)))
+
+        if not avatar:
+            return await ctx.send("no avatar found matching that specification")
+        avatar = avatar.with_size(2048)
+
         formats = ["gif"] if avatar.is_animated() else ["png", "jpg", "webp"]
 
         def as_hyperlink(fmt, *, embedded=False):
