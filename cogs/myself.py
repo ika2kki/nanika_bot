@@ -34,7 +34,7 @@ class myself(core.nanika_cog):
             # i put it in this cog but others can invoke it fine
             return True
         ctx.alway_debug()
-        if await self.is_owner(ctx.author):
+        if await self.bot.is_owner(ctx.author):
             ctx.alway_debug()
             return True
         return False
