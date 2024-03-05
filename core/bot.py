@@ -1,6 +1,7 @@
 import json
 import logging
 import pathlib
+import re
 import traceback
 from collections import deque
 from functools import cached_property
@@ -12,6 +13,8 @@ import watchdog.observers
 import wavelink
 from discord import app_commands as ac
 from discord.ext import commands
+from discord.ext.commands.core import \
+    _CaseInsensitiveDict as CaseInsensitiveDictionary
 from watchdog.events import FileSystemEventHandler
 
 import utils
@@ -48,17 +51,19 @@ class nanika_bot(commands.Bot):
             intents=discord.Intents.all(),
             strip_after_prefix=True,
             http_trace=aiohttp_trace_thing(),
-            max_messages=5000 # default 5x
+            max_messages=5000, # default 5x
+            case_insensitive=True
         )
         self.pgpool = asyncpg_pool
         self.edited_modules = deque(maxlen=255)
         self.default_prefixes = ["ww", "!", "?"]
         self.debug_prefix = "wa"
+        self._BotBase__cogs = CaseInsensitiveDictionary()
 
     async def on_message_edit(self, before, after):
         await self.process_commands(after)
 
-    async def get_prefix(self, message):
+    async def normal_get_prefix(self, message):
         augment = commands.when_mentioned_or
         if await self.is_owner(message.author):
             return augment(self.default_prefixes[0], self.debug_prefix)(self, message)
@@ -66,6 +71,15 @@ class nanika_bot(commands.Bot):
             from_guild = await self.remember_guild_prefixes(guild.id)
             return augment(*from_guild)(self, message)
         return augment(*self.default_prefixes)(self, message)
+
+    async def get_prefix(self, message):
+        prefixes = await self.normal_get_prefix(message)
+        pattern = "|".join(re.escape(p) for p in prefixes)
+        if message.content and (
+            match := re.match(f"({pattern})", message.content[:100], re.IGNORECASE)
+        ):
+            return match.group(1)
+        return prefixes
 
     async def get_context(self, origin, *, cls=None):
         return await super().get_context(origin, cls=cls or nanika_ctx)

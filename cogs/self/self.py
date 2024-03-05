@@ -325,6 +325,7 @@ class SelfBase(core.nanika_cog):
 
     class BotPrefix(Converter):
         async def convert(self, ctx, argument):
+            argument = argument.lower()
             if argument.startswith("/"):
                 raise BadArgument("/ is kept for slash commands only")
             bot_user_id = ctx.me.id
@@ -363,11 +364,11 @@ class SelfBase(core.nanika_cog):
 
                 await c.execute(self.UPSERT_GUILD_PREFIXES, id_, copy)
                 self.bot.remember_guild_prefixes.forget(id_)
-                await ctx.send(f"listening for {len(copy)} prefixes now")
+                await ctx.send(f"listening for {len(copy)} custom prefixes now")
 
     @prefixes.command(name="delete", ignore_extra=False)
     @has_guild_permissions(manage_guild=True)
-    async def prefix_delete(self, ctx, prefix):
+    async def prefix_delete(self, ctx, prefix: str.lower):
         """delete a custom prefix
         prefix with space in it have to be quoted to be deleted properly
         """
@@ -425,7 +426,7 @@ class SelfBase(core.nanika_cog):
             + "\n".join(f"\{fmt:<{maxlen-len(fmt)}} - {fmt}" for fmt in fmts)
         )
 
-    from typing import Optional, Literal
+    from typing import Literal, Optional
 
     @core.command(aliases=["avy"])
     async def avatar(self, ctx, spec: Optional[Literal["*", ".", "-"]], *, user: discord.User = commands.Author):
