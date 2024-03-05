@@ -47,12 +47,16 @@ class nanika_bot(commands.Bot):
             "hello i am string", # get_prefix() is overriden so command_prefix is never used
             intents=discord.Intents.all(),
             strip_after_prefix=True,
-            http_trace=aiohttp_trace_thing()
+            http_trace=aiohttp_trace_thing(),
+            max_messages=5000 # default 5x
         )
         self.pgpool = asyncpg_pool
         self.edited_modules = deque(maxlen=255)
         self.default_prefixes = ["ww", "!", "?"]
         self.debug_prefix = "wa"
+
+    async def on_message_edit(self, before, after):
+        await self.process_commands(after)
 
     async def get_prefix(self, message):
         augment = commands.when_mentioned_or
