@@ -8,6 +8,9 @@ class Magic(core.nanika_cog):
         answers = [
             "it will happen",
             "i decided yes",
+            "maaybe",
+            "uhhhhhhh- sureeee",
+            "yea",
             "there is no doubts",
             "it will def happen",
             "u can rely on it if that makes u comfy",
@@ -19,6 +22,7 @@ class Magic(core.nanika_cog):
             "you werent focusing?",
             "not v reliable",
             "nah",
+            "mmmm dunno",
             "mah, maybe",
             "there is doubts",
             "it wont happen"
