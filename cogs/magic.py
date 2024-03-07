@@ -1,28 +1,26 @@
 from discord.ext import commands
 import random
+import core
 
-class Magic(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-
-    @commands.command(name="8ball", aliases=["eightball","magic8ball"])
-    async def eight_ball(self, ctx, *, question):
+class Magic(core.nanika_cog):
+    @commands.command(name="8ball", aliases=["eightball"])
+    async def eightball(self, ctx, *, question):
         answers = [
-            "It is certain.",
-            "It is decidedly so.",
-            "Without a doubt.",
-            "Yes - definitely.",
-            "You may rely on it.",
-            "As I see it, no.",
-            "I'm not sure.",
-            "Ask again later.",
-            "Better not tell you now.",
-            "Cannot predict now.",
-            "Concentrate and ask again.",
-            "Don't count on it.",
-            "My reply is no.",
-            "I don't think so.",
-            "Very doubtful.",
-            "No."
+            "it will happen",
+            "i decided yes",
+            "there is no doubts",
+            "it will def happen",
+            "u can rely on it if that makes u comfy",
+            "from what i see, nah",
+            "im unsure",
+            "try me again later",
+            "i cant tell you now, for your safety",
+            "its too blurry for me rn",
+            "you werent focusing?",
+            "not v reliable",
+            "nah",
+            "mah, maybe",
+            "there is doubts",
+            "it wont happen"
         ]
-        await ctx.send(f"Your question: {question}\n The 8ball replied: {random.choice(answers)}")
+        await ctx.send(f"magic eight ball say this: {random.choice(answers)}, in response to your question:\n{question}"[:2000])
