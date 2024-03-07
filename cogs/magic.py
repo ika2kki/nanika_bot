@@ -28,3 +28,7 @@ class Magic(core.nanika_cog):
             "it wont happen"
         ]
         await ctx.send(f"magic eight ball say this: {random.choice(answers)}, in response to your question:\n{question}"[:2000])
+
+
+async def setup(bot):
+    await bot.add_cog(Magic(bot))
