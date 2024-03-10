@@ -439,19 +439,16 @@ class SelfBase(core.nanika_cog):
         """
         attrs = ["guild_avatar", "avatar", "default_avatar"]
         offset = 0
-        if spec == "*":
-            offset += 1
-        elif spec == ".":
+        if spec == ".":
             if not ctx.guild:
                 return await ctx.send("we r in dm's")
+        elif spec == "*":
+            offset += 1
         elif spec == "-":
             offset += 2
+
         avatar = next(avy for attr in attrs[offset:] if (avy := getattr(user, attr, None)))
-
-        if not avatar:
-            return await ctx.send("no avatar found matching that specification")
         avatar = avatar.with_size(2048)
-
         formats = ["gif"] if avatar.is_animated() else ["png", "jpg", "webp"]
 
         def as_hyperlink(fmt, *, embedded=False):
