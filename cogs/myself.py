@@ -33,11 +33,10 @@ class myself(core.nanika_cog):
         if ctx.command.qualified_name.startswith("rtfm"):
             # i put it in this cog but others can invoke it fine
             return True
+        return await self.bot.is_owner(ctx.author)
+
+    async def cog_before_invoke(self, ctx):
         ctx.alway_debug()
-        if await self.bot.is_owner(ctx.author):
-            ctx.alway_debug()
-            return True
-        return False
 
     @core.command()
     async def reloadext(self, ctx, ext):
