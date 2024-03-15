@@ -14,7 +14,8 @@ class aiohttp_trace_thing(aiohttp.TraceConfig):
     async def request_end_event(self, session, ctx, params):
         response = params.response
         if 400 <= response.status < 500:
-            message = [f"api {response.status} exception {response.method} {response.url}"]
-            for name, value in response.headers.items():
-                message.append(f"{name} {value}")
-            LOGGER.warning("\n".join(message))
+            if response.status != 429:
+                message = [f"api {response.status} exception {response.method} {response.url}"]
+                for name, value in response.headers.items():
+                    message.append(f"{name} {value}")
+                LOGGER.warning("\n".join(message))
