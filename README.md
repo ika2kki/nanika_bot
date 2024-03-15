@@ -6,6 +6,10 @@ inspired by lots of other bot
 
 anything welcome- thanks you a lot
 
+<a href="https://github.com/ika2kki/nanika_bot/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=ika2kki/nanika_bot" />
+</a>
+
 ### self-hosting for test
 
 stuff to install:
@@ -23,11 +27,11 @@ $ sudo -u postgres pgsql
 ```
 
 ```pgsql
-postgres=# CREATE USER nanika_bot WITH ENCRYPTED PASSWORD 'nanika';
-postgres=# CREATE DATABASE nanika_bot WITH OWNER nanika_bot;
-postgres=# GRANT ALL PRIVILEGES ON DATABASE nanika_bot TO nanika_bot;
-postgres=# \connect nanika_bot
-postgres=# CREATE EXTENSION pg_trgm;
+CREATE USER nanika_bot WITH ENCRYPTED PASSWORD 'nanika';
+CREATE DATABASE nanika_bot WITH OWNER nanika_bot;
+GRANT ALL PRIVILEGES ON DATABASE nanika_bot TO nanika_bot;
+\connect nanika_bot
+CREATE EXTENSION pg_trgm;
 ```
 
 install tesseract - on debian you can do this with:
@@ -46,9 +50,7 @@ to make the venv with poetry, do this from within same folder as `pyproject.toml
 $ poetry install
 ```
 
-add configuration in `config.toml`~ spec is outlined in [`config.toml`](core/config.py).
-
-now to run bot and lavalink server:
+add configuration in `config.toml`~ spec is outlined in [`config.toml`](core/config.py).:
 
 now this pair of commands needs to be used to run the bot:
 ```shell
