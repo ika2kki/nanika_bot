@@ -20,6 +20,17 @@ class nanika_ctx(OriginalContext):
         self._dont_need_parsing = False
         self._debugging = False
 
+    def purge(self, **kwargs):
+        if self.guild:
+            return self.channel.purge(**kwargs)
+        # no bulk delete + can only delete messages from self
+        me = self.me
+        def check(m):
+            return m.author == me
+        kwargs["check"] = check
+        kwargs["bulk"] = False
+        return discord.abc._purge_helper(self.channel, **kwargs)
+
     @contextmanager
     def redirect(self, sendable):
         previous = self._redirect
