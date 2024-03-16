@@ -21,13 +21,24 @@ class nanika_ctx(OriginalContext):
         self._debugging = False
 
     def purge(self, **kwargs):
+        """purge that also work in DMs
+        check, if provided, doesnt need to confirm message author (can only delete messages from self)
+        also there is no bulk delete
+        other keywords are forwarded to original purge() method untouched
+        """
         if self.guild:
             return self.channel.purge(**kwargs)
-        # no bulk delete + can only delete messages from self
+
+        predicate = kwargs.get("check")
+        if predicate is None:
+            def predicate(m):
+                return True
+
         me = self.me
-        def check(m):
-            return m.author == me
-        kwargs["check"] = check
+        def actual_check(m):
+            return m.author == me and predicate(m)
+
+        kwargs["check"] = actual_check
         kwargs["bulk"] = False
         return discord.abc._purge_helper(self.channel, **kwargs)
 
