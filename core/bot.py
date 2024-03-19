@@ -16,7 +16,7 @@ from discord.ext import commands
 from discord.ext.commands.core import \
     _CaseInsensitiveDict as CaseInsensitiveDictionary
 from watchdog.events import FileSystemEventHandler
-
+from .i10n import nanika_bot_translator
 import utils
 
 from .config import configs
@@ -95,6 +95,9 @@ class nanika_bot(commands.Bot):
         LOGGER.info(f"stuff stuff im up {self.user} (id: {self.user.id})")
 
     async def setup_hook(self):
+        app_command_translator = nanika_bot_translator(self, filepath="fluent_ftl", native=discord.Locale.british_english)
+        await self.tree.set_translator(app_command_translator)
+
         try:
             await self.load_extension("jishaku")
         except commands.ExtensionError as exc:
@@ -162,7 +165,7 @@ class nanika_bot(commands.Bot):
             return [ac.AppCommand(data=c, state=self._connection) for c in data]
 
     async def on_command_error(self, ctx, error):
-        if isinstance(error, (commands.CommandInvokeError, commands.ConversionError)):
+        if isinstance(error, (commands.CommandInvokeError, commands.ConversionError, commands.HybridCommandError)):
             LOGGER.error(f"Ignoring unknown exception in command {ctx.command.qualified_name}", exc_info=error)
 
             probably_nanika_debugging = ctx._debugging or await self.is_owner(ctx.author) and ctx.prefix == self.debug_prefix
