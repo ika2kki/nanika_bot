@@ -9,6 +9,7 @@ import logging
 import pathlib
 import re
 from collections import Counter
+from functools import wraps
 from math import inf
 from typing import Annotated
 
@@ -32,6 +33,16 @@ import utils
 from core import navi
 
 LOGGER = logging.getLogger(__name__)
+
+def raise_for_ghost(method):
+    @wraps(method)
+    async def decorated(self, thing):
+        if getattr(thing, "ghost", False):
+            string = await maybe_coro(self.command_not_found, self.remove_mentions(self.context.invoked_with))
+            await self.send_error_message(string)
+        else:
+            await method(self, thing)
+    return decorated
 
 @starlight.describe_help_command(command="command or cog to search for")
 class nanika_bot_help_command(DefaultHelpCommand, starlight.HelpHybridCommand):
@@ -57,20 +68,9 @@ class nanika_bot_help_command(DefaultHelpCommand, starlight.HelpHybridCommand):
     # otherwise, people can still find help for it if they type in
     # a command name explicility and i dont think its appriopate
     # same should apply to ghost command...
-    async def prepare_help_command(self, ctx, argument):
-        if argument is None:
-            return
-
-        cog = self.bot.get_cog(argument)
-        if not cog:
-            cmd = self.bot.get_command(argument)
-            if cmd:
-                if getattr(cmd, "ghost", False):
-                    raise self.dummy
-                cog = cmd.cog
-
-        if cog and cog.qualified_name in {"Jishaku",}:
-            raise self.dummy
+    send_cog_help = raise_for_ghost(DefaultHelpCommand.send_cog_help)
+    send_group_help = raise_for_ghost(DefaultHelpCommand.send_group_help)
+    send_command_help = raise_for_ghost(DefaultHelpCommand.send_command_help)
 
     def get_prefix(self, command):
         if isinstance(command, (app_commands.Command, app_commands.Group)):
@@ -84,14 +84,6 @@ class nanika_bot_help_command(DefaultHelpCommand, starlight.HelpHybridCommand):
             # the guild mightve removed this prefix but its ok for display purposes
             else self.bot.default_prefixes[0]
         )
-
-    async def command_callback(self, ctx, *, command=None):
-        # now catch it
-        try:
-            await super().command_callback(ctx, command=command)
-        except self.dummy:
-            string = await maybe_coro(self.command_not_found, self.remove_mentions(command.split()[0]))
-            await self.send_error_message(string)
 
     def walk_with_respect_to_hidden(self, cmd):
         if not cmd.hidden:

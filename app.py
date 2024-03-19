@@ -17,7 +17,7 @@ discord.VoiceClient.warn_nacl = False
 
 jishaku.Flags.NO_UNDERSCORE = True
 jishaku.Flags.NO_DM_TRACEBACK = True
-jishaku.Flags.HIDE = True
+#jishaku.Flags.HIDE = True
 
 ROOT = logging.getLogger()
 ROOT.setLevel(logging.INFO)
