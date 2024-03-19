@@ -151,6 +151,12 @@ class nanika_ctx(OriginalContext):
         navi.update_items()
         await self.send(**prepped)
 
+    # temporary bandage
+    @discord.utils.cached_property
+    def me(self):
+        me_rn = super().me
+        return me_rn or self.bot.user
+
     # i feel unsafe naming this copy() since dpy does it a lot
     def copy_context(self, *, interaction=MISSING, with_invoke_id=False):
         copy = self.__class__(
