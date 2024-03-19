@@ -24,6 +24,7 @@ jishaku = {git = "https://github.com/Gorialis/jishaku"}
 sphinx = "^7.2.6"
 rapidfuzz = "^3.6.1"
 starlight-dpy = {git = "https://github.com/InterStella0/starlight-dpy"}
+fluent-compiler = "^1.0"
 
 [tool.poetry.group.dev.dependencies]
 isort = "^5.12.0"

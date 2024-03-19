@@ -1,3 +1,4 @@
+from . import i10n as i10n
 from . import navi as navi
 from .bot import *
 from .cog import *
