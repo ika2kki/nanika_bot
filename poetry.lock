@@ -493,7 +493,7 @@ test-randomorder = ["pytest-randomly"]
 
 [[package]]
 name = "discord.py"
-version = "2.4.0a4995+g82d13e7b4"
+version = "2.4.0a4997+g0e016be42"
 description = "A Python wrapper for the Discord API"
 optional = false
 python-versions = ">=3.8.0"
@@ -1447,6 +1447,17 @@ files = [
 ]
 
 [[package]]
+name = "tzdata"
+version = "2024.1"
+description = "Provider of IANA time zone data"
+optional = false
+python-versions = ">=2"
+files = [
+    {file = "tzdata-2024.1-py2.py3-none-any.whl", hash = "sha256:9068bc196136463f5245e51efda838afa15aaeca9903f49050dfa2679db4d252"},
+    {file = "tzdata-2024.1.tar.gz", hash = "sha256:2674120f8d891909751c38abcdfd386ac0a5a1127954fbc332af6b5ceae07efd"},
+]
+
+[[package]]
 name = "urllib3"
 version = "2.2.1"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
@@ -1643,4 +1654,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "51dac81dd0e0a38e6305cad86094fa8a7c8e1cad99fba854f5d474a27aa86afa"
+content-hash = "cd56b1d2372464b8a55a03757adf6488d70aab3281c3b52bddc02e46bd52d5cc"

@@ -1,10 +1,12 @@
-from anathema import datetime_curse # isort:skip
+from anathema import datetime_curse # isort: skip
 
 import asyncio
+import datetime
 import logging
 import signal
 import traceback
-from logging.handlers import RotatingFileHandler
+import zoneinfo
+from logging.handlers import TimedRotatingFileHandler
 
 import asyncpg
 import discord
@@ -22,11 +24,12 @@ jishaku.Flags.NO_DM_TRACEBACK = True
 ROOT = logging.getLogger()
 ROOT.setLevel(logging.INFO)
 
-filer = RotatingFileHandler(
+filer = TimedRotatingFileHandler(
     filename="nanika_bot.log",
     encoding="utf-8",
-    maxBytes=32 * 1024 * 1024,
-    backupCount=5
+    #maxBytes=32 * 1024 * 1024,
+    backupCount=5,
+    atTime=datetime.time(hour=0, minute=0, tzinfo=zoneinfo.ZoneInfo("Australia/Melbourne"))
 )
 filer.setFormatter(
     logging.Formatter(
