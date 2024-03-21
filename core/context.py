@@ -146,7 +146,7 @@ class nanika_ctx(OriginalContext):
 
     async def paginate(self, navi):
         navi.owner_id = self.author.id
-        thing = await discord.utils.maybe_coroutine(navi.source.peek, self)
+        thing = await discord.utils.maybe_coroutine(navi.source.peek, navi)
         prepped = await navi.prepare(thing)
         navi.update_items()
         await self.send(**prepped)
