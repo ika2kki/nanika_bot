@@ -113,14 +113,14 @@ class Navi(ui.View):
             prepped |= fmt
         return prepped
 
-    @ui.button(label="1 \N{BLACK LEFT-POINTING DOUBLE TRIANGLE}" + VS15)
+    @ui.button(label="1 \N{MUCH LESS-THAN}" + VS15)
     async def jump_first(self, interaction, button):
         item = await maybe_coro(self.source.jump_first, self)
         prepped = await self.prepare(item)
         self.update_items()
         await interaction.response.edit_message(**prepped)
 
-    @ui.button(label="\N{BLACK LEFT-POINTING TRIANGLE}" + VS15, style=discord.ButtonStyle.green)
+    @ui.button(label="\N{LESS-THAN SIGN}" + VS15, style=discord.ButtonStyle.green)
     async def previous(self, interaction, button):
         item = await maybe_coro(self.source.previous, self)
         prepped = await self.prepare(item)
@@ -130,7 +130,7 @@ class Navi(ui.View):
     @ui.button(style=discord.ButtonStyle.blurple, disabled=True)
     async def page_number(self, interaction, button): ...
 
-    @ui.button(label="\N{BLACK RIGHT-POINTING TRIANGLE}" + VS15, style=discord.ButtonStyle.green)
+    @ui.button(label="\N{GREATER-THAN SIGN}" + VS15, style=discord.ButtonStyle.green)
     async def next(self, interaction, button):
         item = await maybe_coro(self.source.next, self)
         prepped = await self.prepare(item)
@@ -158,4 +158,4 @@ class Navi(ui.View):
         self.jump_first.disabled = self.previous.disabled = self.source.index == 0
         self.page_number.label = str(self.source.index + 1)
         self.jump_last.disabled = self.next.disabled = self.source.index == (self.source.max_pages - 1)
-        self.jump_last.label = f"\N{BLACK RIGHT-POINTING DOUBLE TRIANGLE}{VS15} {self.source.max_pages}"
+        self.jump_last.label = f"\N{MUCH GREATER-THAN}{VS15} {self.source.max_pages}"
