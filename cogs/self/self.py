@@ -23,8 +23,7 @@ from discord.ext.commands import (
     Converter,
     DefaultHelpCommand,
     FlagConverter,
-    group,
-    has_guild_permissions
+    group
 )
 from discord.utils import maybe_coroutine as maybe_coro
 
@@ -334,7 +333,7 @@ class SelfBase(core.nanika_cog):
         DO UPDATE SET prefixes=EXCLUDED.prefixes"""
 
     @prefixes.command(name="add", ignore_extra=False)
-    @has_guild_permissions(manage_guild=True)
+    @core.has_guild_permissions(manage_guild=True)
     async def prefix_add(self, ctx, prefix: Annotated[str, BotPrefix]):
         """add a custom prefix
         to include spaces in prefix, wrap it in "
@@ -359,7 +358,7 @@ class SelfBase(core.nanika_cog):
                 await ctx.send(f"listening for {len(copy)} custom prefixes now")
 
     @prefixes.command(name="delete", ignore_extra=False)
-    @has_guild_permissions(manage_guild=True)
+    @core.has_guild_permissions(manage_guild=True)
     async def prefix_delete(self, ctx, prefix: str.lower):
         """delete a custom prefix
         prefix with space in it have to be quoted to be deleted properly
@@ -378,7 +377,7 @@ class SelfBase(core.nanika_cog):
                 await ctx.send("its gone")
 
     @prefixes.command(name="default", ignore_extra=False)
-    @has_guild_permissions(manage_guild=True)
+    @core.has_guild_permissions(manage_guild=True)
     async def prefix_default(self, ctx):
         """reset back to default prefixes"""
         id_ = ctx.guild.id
