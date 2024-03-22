@@ -409,7 +409,7 @@ class Music(commands.Cog):
             state = ctx.author.voice
             if not state or not state.channel:
                 raise VoiceError("join a voice channel")
-            player = await state.channel.connect(cls=nanika_bot_music_player)
+            player = await state.channel.connect(cls=nanika_bot_music_player, self_deaf=True)
 
         # its always a good idea to push to the queue
         # so looping behaviour works as expected
