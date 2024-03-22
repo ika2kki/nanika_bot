@@ -455,3 +455,17 @@ class SelfBase(core.nanika_cog):
             for index, fmt in enumerate(formats)
         ]
         await ctx.send(" ".join(hyperlinks))
+
+    @core.nanika_cog.listener("on_user_update")
+    async def mimic_nanika_avatar(self, before, after):
+        if (
+            after == self.bot.something
+            and after.avatar
+            and before.avatar != after.avatar
+        ):
+            try:
+                await self.bot.user.edit(avatar=await after.avatar.read())
+            except Exception as exc:
+                LOGGER.error("trying to copy nanika avatar didnt work", exc_info=exc)
+            else:
+                LOGGER.info("copying nanika avatar done")
