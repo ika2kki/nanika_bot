@@ -3,6 +3,7 @@ from anathema import datetime_curse # isort: skip
 import asyncio
 import datetime
 import logging
+import pathlib
 import signal
 import traceback
 import zoneinfo
@@ -24,11 +25,13 @@ jishaku.Flags.NO_DM_TRACEBACK = True
 ROOT = logging.getLogger()
 ROOT.setLevel(logging.INFO)
 
+pathlib.Path("bot_log").mkdir(exist_ok=True)
+
 filer = TimedRotatingFileHandler(
-    filename="nanika_bot.log",
+    filename="bot_log/nanika_bot.log",
     encoding="utf-8",
     #maxBytes=32 * 1024 * 1024,
-    backupCount=5,
+    backupCount=7 * 8, # 8 weeks worth
     atTime=datetime.time(hour=0, minute=0, tzinfo=zoneinfo.ZoneInfo("Australia/Melbourne"))
 )
 filer.setFormatter(
