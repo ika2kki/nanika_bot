@@ -34,6 +34,8 @@ class Tesseract(commands.Cog):
     def cog_unload(self):
         self.bot.tree.remove_command(self.context_cmd.name, type=self.context_cmd.type)
 
+    @app_commands.allow_contexts(guilds=True, dms=True, private_channels=True)
+    @app_commands.allow_installs(guilds=True, users=True)
     async def tess_context_cmd_adapter(self, interaction, message: discord.Message):
         if message.author == self.bot.user:
             return await interaction.response.send_message("sorry u cant use tesseract on messages that i send",
