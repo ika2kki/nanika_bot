@@ -16,11 +16,12 @@ from discord.ext import commands
 from discord.ext.commands.core import \
     _CaseInsensitiveDict as CaseInsensitiveDictionary
 from watchdog.events import FileSystemEventHandler
-from .i10n import nanika_bot_translator
+
 import utils
 
 from .config import configs
 from .context import nanika_ctx
+from .i10n import nanika_bot_translator
 from .trace import aiohttp_trace_thing
 
 __all__ = ("Terrier", "nanika_bot",)
@@ -61,7 +62,8 @@ class nanika_bot(commands.Bot):
         self._BotBase__cogs = CaseInsensitiveDictionary()
 
     async def on_message_edit(self, before, after):
-        await self.process_commands(after)
+        if before.content != after.content:
+            await self.process_commands(after)
 
     async def normal_get_prefix(self, message):
         augment = commands.when_mentioned_or
