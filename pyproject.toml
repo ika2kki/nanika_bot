@@ -12,7 +12,7 @@ asyncpg = "^0.29.0"
 "discord.py" = { git = "https://github.com/Rapptz/discord.py.git", extras = [
     "voice",
     "speedup",
-], rev = "master" }
+], rev = "feature/user_apps" }
 typing-extensions = "^4.8.0"
 pillow = "^10.1.0"
 tabulate = "^0.9.0"
@@ -26,6 +26,7 @@ rapidfuzz = "^3.6.1"
 starlight-dpy = {git = "https://github.com/InterStella0/starlight-dpy"}
 fluent-compiler = "^1.0"
 tzdata = "^2024.1"
+humanize = "^4.9.0"
 
 [tool.poetry.group.dev.dependencies]
 isort = "^5.12.0"
