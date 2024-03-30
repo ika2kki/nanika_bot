@@ -149,7 +149,7 @@ class Internet(core.nanika_cog):
         await self.session.close()
 
     @commands.command(require_var_positional=True)
-    @commands.is_nsfw()
+    @core.is_nsfw()
     @commands.cooldown(3, 5.0)
     async def gel(self, ctx, *tags):
         """search gelbooru.
