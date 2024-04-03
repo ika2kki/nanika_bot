@@ -16,13 +16,15 @@ from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import FlagConverter, flag
 from sphinx.util.inventory import InventoryFile as SphinxInventoryFile
-
+import logging
 import core
 import utils
 
 
 async def setup(bot):
     await bot.add_cog(myself(bot))
+
+LOGGER = logging.getLogger(__name__)
 
 class myself(core.nanika_cog):
     def __init__(self, bot):
@@ -238,3 +240,50 @@ class myself(core.nanika_cog):
             await ctx.send("no library with that name cached")
         else:
             await ctx.react("\N{JOYSTICK}")
+
+    @core.command()
+    async def viewtest(self, ctx):
+        from discord import ui, SelectOption, ButtonStyle
+
+        class Dropdown(ui.Select):
+            def __init__(self):
+                super().__init__(
+                placeholder='Relations',
+                options=[
+                    SelectOption(label="Foo"),
+                    SelectOption(label="Bar"),
+                ]
+                )
+
+        class Button(ui.DynamicItem, template="test_button"):
+            def __init__(self):
+                super().__init__(
+                ui.Button(
+                    label="Hello",
+                    style=ButtonStyle.green,
+                    custom_id="test_button"
+                )
+                )
+
+            @classmethod
+            async def from_custom_id(
+                cls,
+                _interaction: discord.Interaction,
+                _btn: ui.Button[ui.View],
+                _match,
+            ):
+                return cls()
+
+            async def callback(self, interaction: discord.Interaction):
+                self.item.style = (
+                    ButtonStyle.gray
+                    if self.item.style == ButtonStyle.green
+                    else ButtonStyle.green
+                )
+                await interaction.response.edit_message(view=self.view)
+
+        view = ui.View()
+        view.add_item(Dropdown())
+        view.add_item(Button())
+
+        await ctx.send(view=view)

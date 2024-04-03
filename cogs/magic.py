@@ -1,6 +1,9 @@
-from discord.ext import commands
 import random
+
+from discord.ext import commands
+
 import core
+
 
 class Magic(core.nanika_cog):
     @commands.command(name="8ball", aliases=["eightball"])
@@ -27,7 +30,7 @@ class Magic(core.nanika_cog):
             "there is doubts",
             "it wont happen"
         ]
-        await ctx.send(f"magic eight ball say this: {random.choice(answers)}, in response to your question:\n{question}"[:2000])
+        await ctx.reply(f"magic eight ball say this:\n{random.choice(answers)}", mention_author=False)
 
 
 async def setup(bot):
